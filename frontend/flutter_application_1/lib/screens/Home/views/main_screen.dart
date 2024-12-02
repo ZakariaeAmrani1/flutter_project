@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/data.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -38,6 +37,9 @@ class MainScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(
+                      width: 10,
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -61,8 +63,17 @@ class MainScreen extends StatelessWidget {
                     )
                   ],
                 ),
-                IconButton(
-                    onPressed: () {}, icon: const Icon(CupertinoIcons.settings))
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(CupertinoIcons.settings,
+                        color: Colors.grey.shade700),
+                  ),
+                ),
               ],
             ),
             const SizedBox(
