@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/data.dart';
+import 'package:flutter_application_1/screens/Home/views/main_screen.dart';
 import 'package:flutter_application_1/screens/stats/view/chart.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -53,23 +54,9 @@ class _StatsScreenState extends State<StatsScreen>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
+                const Row(
                   children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: IconButton(
-                        onPressed: () {},
-                        icon: FaIcon(FontAwesomeIcons.arrowLeft,
-                            color: Colors.grey.shade700),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    const Text(
+                    Text(
                       "Transactions",
                       style: TextStyle(
                           color: Color.fromARGB(255, 20, 37, 63),

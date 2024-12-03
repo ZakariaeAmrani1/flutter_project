@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/screens/Home/views/main_screen.dart';
+import 'package:flutter_application_1/screens/add_transaction/view/add_transaction.dart';
 import 'package:flutter_application_1/screens/stats/view/stats_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -32,22 +33,42 @@ class _HomeScreenState extends State<HomeScreen> {
             showSelectedLabels: false,
             showUnselectedLabels: false,
             elevation: 3,
-            items: const [
+            items: [
               BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.home), label: "Home"),
+                  icon: Icon(
+                    Icons.dashboard_rounded,
+                    color: index == 0
+                        ? Colors.grey.shade700
+                        : Colors.grey.shade400,
+                  ),
+                  label: "Home"),
               BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.graph_square), label: "Stats"),
+                  icon: Icon(
+                    Icons.graphic_eq_rounded,
+                    color: index == 1
+                        ? Colors.grey.shade700
+                        : Colors.grey.shade400,
+                  ),
+                  label: "Stats"),
             ]),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) => const AddTransaction(),
+            ),
+          );
+        },
         shape: const CircleBorder(),
         child: Container(
           width: 60,
           height: 60,
           decoration: BoxDecoration(
-            shape: BoxShape.circle,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(20),
             gradient: LinearGradient(
               colors: [
                 Theme.of(context).colorScheme.tertiary,
