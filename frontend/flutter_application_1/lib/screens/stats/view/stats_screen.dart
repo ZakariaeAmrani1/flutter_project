@@ -3,9 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/data.dart';
-import 'package:flutter_application_1/screens/Home/views/main_screen.dart';
 import 'package:flutter_application_1/screens/stats/view/chart.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -17,7 +15,6 @@ class StatsScreen extends StatefulWidget {
 class _StatsScreenState extends State<StatsScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  final _selectedColor = const Color(0xff1a73e8);
   final _tabs = [
     Tab(
       child: Container(
@@ -62,7 +59,7 @@ class _StatsScreenState extends State<StatsScreen>
                           color: Color.fromARGB(255, 20, 37, 63),
                           fontSize: 25,
                           fontWeight: FontWeight.bold),
-                    )
+                    ),
                   ],
                 ),
                 Container(
@@ -150,10 +147,11 @@ class _StatsScreenState extends State<StatsScreen>
                                           ),
                                         ),
                                         const SizedBox(height: 5),
-                                        Text(
+                                        const Text(
                                           "3500 \$",
                                           style: TextStyle(
-                                            color: Colors.grey.shade900,
+                                            color:
+                                                Color.fromARGB(255, 20, 37, 63),
                                             fontSize: 22,
                                             fontWeight: FontWeight.bold,
                                           ),
