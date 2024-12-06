@@ -42,6 +42,8 @@ dependencies:
   list_picker: ^1.2.0
   multi_dropdown: ^3.0.1
   dropdown_button2: ^2.3.9
+  flutter_holo_date_picker: ^2.0.0
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:
