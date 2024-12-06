@@ -272,6 +272,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  gender_picker:
+    dependency: "direct main"
+    description:
+      name: gender_picker
+      sha256: "75180516208bb524ba6164755915edefaff8035cbfbc94073427270c4b1b766c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   glob:
     dependency: transitive
     description:
@@ -416,6 +424,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
+  nation_code_picker:
+    dependency: "direct main"
+    description:
+      name: nation_code_picker
+      sha256: fd8668aadadae5398e8e6cf8b6044e317cd5c604eda387bac988957784b89968
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   native_synchronization_temp:
     dependency: transitive
     description:

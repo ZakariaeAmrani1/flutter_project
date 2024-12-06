@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/data.dart';
+import 'package:flutter_application_1/screens/settings/views/settings_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -69,7 +70,15 @@ class MainScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) =>
+                              const SettingsScreen(),
+                        ),
+                      );
+                    },
                     icon: Icon(CupertinoIcons.settings,
                         color: Colors.grey.shade700),
                   ),
