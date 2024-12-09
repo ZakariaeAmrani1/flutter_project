@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_holo_date_picker/date_picker.dart';
 import 'package:flutter_holo_date_picker/i18n/date_picker_i18n.dart';
-import 'package:gender_picker/source/enums.dart';
-import 'package:gender_picker/source/gender_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:nation_code_picker/nation_code_picker.dart';
 
@@ -19,6 +17,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  String? selectedGender = "Male";
   String? selectedDate;
   NationCodes _selectedNationCode = NationCodes.ma;
 
@@ -37,7 +36,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.width / 2,
+                      height: MediaQuery.of(context).size.width / 2.5,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
@@ -99,15 +98,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
                     Image.asset(
-                      'assets/male.png',
-                      width: 60,
+                      selectedGender == "Male"
+                          ? 'assets/malelogo.png'
+                          : 'assets/femalelogo.png',
+                      width: 70,
                     ),
                   ],
                 ),
               ],
             ),
             const SizedBox(
-              height: 20,
+              height: 40,
             ),
             Container(
               height: 55,
@@ -281,33 +282,85 @@ class _SettingsScreenState extends State<SettingsScreen> {
             const SizedBox(
               height: 20,
             ),
-            GenderPickerWithImage(
-              showOtherGender: false,
-              verticalAlignedText: false,
-              maleImage: const AssetImage("assets/malelogo.png"),
-              selectedGender: Gender.Male,
-              selectedGenderTextStyle: TextStyle(
-                color: Colors.grey.shade700,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
+            Container(
+              height: 60,
+              width: MediaQuery.of(context).size.width / 1.12,
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(15),
               ),
-              unSelectedGenderTextStyle: const TextStyle(
-                color: Colors.grey,
-                fontWeight: FontWeight.normal,
-                fontSize: 16,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const Text(
+                      "Gender",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 30,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedGender = "Male";
+                        });
+                      },
+                      child: Text(
+                        "Male",
+                        style: TextStyle(
+                          color: Colors.grey.shade800,
+                          fontSize: 16,
+                        ),
+                      ),
+                      style: selectedGender == "Male"
+                          ? ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey[500],
+                              shadowColor: Colors.transparent,
+                            )
+                          : ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey[200],
+                              shadowColor: Colors.transparent,
+                            ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          selectedGender = "Female";
+                        });
+                      },
+                      child: Text(
+                        "Female",
+                        style: TextStyle(
+                          color: Colors.grey.shade800,
+                          fontSize: 16,
+                        ),
+                      ),
+                      style: selectedGender == "Female"
+                          ? ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey[500],
+                              shadowColor: Colors.transparent,
+                            )
+                          : ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey[200],
+                              shadowColor: Colors.transparent,
+                            ),
+                    ),
+                  ],
+                ),
               ),
-              onChanged: (Gender? gender) {
-                // ignore: avoid_print
-                print(gender);
-              },
-              equallyAligned: true,
-              animationDuration: const Duration(milliseconds: 300),
-              isCircular: true,
-              // default : true,
-              opacityOfGradient: 0.4,
-              padding: const EdgeInsets.all(3),
-              size: 50, //default : 40
-            )
+            ),
           ],
         ),
         resizeToAvoidBottomInset: false,

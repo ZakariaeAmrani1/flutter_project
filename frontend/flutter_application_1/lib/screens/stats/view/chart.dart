@@ -38,7 +38,7 @@ class _MyChartState extends State<MyChart> {
   List<BarChartGroupData> showingGroups() => List.generate(8, (i) {
         switch (i) {
           case 0:
-            return makeGroupData(0, 2);
+            return makeGroupData(0, 4);
           case 1:
             return makeGroupData(1, 3);
           case 2:

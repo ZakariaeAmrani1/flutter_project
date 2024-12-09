@@ -14,7 +14,6 @@ class StatsScreen extends StatefulWidget {
 
 class _StatsScreenState extends State<StatsScreen>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
   final _tabs = [
     Tab(
       child: Container(
@@ -29,17 +28,6 @@ class _StatsScreenState extends State<StatsScreen>
       ),
     ),
   ];
-  @override
-  void initState() {
-    _tabController = TabController(length: 2, vsync: this);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _tabController.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,8 +114,7 @@ class _StatsScreenState extends State<StatsScreen>
                               children: [
                                 Container(
                                   width: MediaQuery.of(context).size.width,
-                                  height:
-                                      MediaQuery.of(context).size.width - 70,
+                                  height: 330,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(12),
@@ -292,8 +279,7 @@ class _StatsScreenState extends State<StatsScreen>
                               children: [
                                 Container(
                                   width: MediaQuery.of(context).size.width,
-                                  height:
-                                      MediaQuery.of(context).size.width - 70,
+                                  height: 330,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(12),
