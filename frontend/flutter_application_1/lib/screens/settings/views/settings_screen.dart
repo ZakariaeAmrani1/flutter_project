@@ -125,7 +125,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   hintText: 'Username',
                   hintStyle: TextStyle(
                     color: Colors.grey,
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
                   prefixIcon: Icon(
                     Icons.person,
@@ -156,7 +156,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   hintText: 'Email',
                   hintStyle: TextStyle(
                     color: Colors.grey,
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
                   prefixIcon: Icon(
                     Icons.email,
@@ -210,7 +210,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           : selectedDate.toString(),
                       style: const TextStyle(
                         color: Colors.grey,
-                        fontSize: 16,
+                        fontSize: 14,
                       ),
                     ),
                   ],
@@ -235,7 +235,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -260,7 +260,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           hintText: 'Phone Number',
                           hintStyle: TextStyle(
                             color: Colors.grey,
-                            fontSize: 16,
+                            fontSize: 14,
                           ),
                         ),
                         style: TextStyle(
@@ -293,6 +293,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     const SizedBox(
                       width: 10,
@@ -302,60 +303,66 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       style: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 14,
                       ),
                     ),
                     const SizedBox(
                       width: 30,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          selectedGender = "Male";
-                        });
-                      },
-                      child: Text(
-                        "Male",
-                        style: TextStyle(
-                          color: Colors.grey.shade800,
-                          fontSize: 16,
-                        ),
-                      ),
-                      style: selectedGender == "Male"
-                          ? ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey[500],
-                              shadowColor: Colors.transparent,
-                            )
-                          : ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey[200],
-                              shadowColor: Colors.transparent,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              selectedGender = "Male";
+                            });
+                          },
+                          child: Text(
+                            "Male",
+                            style: TextStyle(
+                              color: Colors.grey.shade800,
+                              fontSize: 14,
                             ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          selectedGender = "Female";
-                        });
-                      },
-                      child: Text(
-                        "Female",
-                        style: TextStyle(
-                          color: Colors.grey.shade800,
-                          fontSize: 16,
+                          ),
+                          style: selectedGender == "Male"
+                              ? ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.grey[400],
+                                  shadowColor: Colors.transparent,
+                                )
+                              : ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.grey[200],
+                                  shadowColor: Colors.transparent,
+                                ),
                         ),
-                      ),
-                      style: selectedGender == "Female"
-                          ? ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey[500],
-                              shadowColor: Colors.transparent,
-                            )
-                          : ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey[200],
-                              shadowColor: Colors.transparent,
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              selectedGender = "Female";
+                            });
+                          },
+                          child: Text(
+                            "Female",
+                            style: TextStyle(
+                              color: Colors.grey.shade800,
+                              fontSize: 14,
                             ),
+                          ),
+                          style: selectedGender == "Female"
+                              ? ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.grey[400],
+                                  shadowColor: Colors.transparent,
+                                )
+                              : ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.grey[200],
+                                  shadowColor: Colors.transparent,
+                                ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

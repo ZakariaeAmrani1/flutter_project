@@ -24,33 +24,32 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: ClipRRect(
         borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
         child: BottomNavigationBar(
-            onTap: (value) {
-              setState(() {
-                index = value;
-              });
-            },
-            backgroundColor: Colors.white,
-            showSelectedLabels: false,
-            showUnselectedLabels: false,
-            elevation: 3,
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.dashboard_rounded,
-                    color: index == 0
-                        ? Colors.grey.shade700
-                        : Colors.grey.shade400,
-                  ),
-                  label: "Home"),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.graphic_eq_rounded,
-                    color: index == 1
-                        ? Colors.grey.shade700
-                        : Colors.grey.shade400,
-                  ),
-                  label: "Stats"),
-            ]),
+          onTap: (value) {
+            setState(() {
+              index = value;
+            });
+          },
+          backgroundColor: Colors.white,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          elevation: 3,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.dashboard_rounded,
+                color: index == 0 ? Colors.grey.shade700 : Colors.grey.shade400,
+              ),
+              label: "Home",
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Icons.graphic_eq_rounded,
+                color: index == 1 ? Colors.grey.shade700 : Colors.grey.shade400,
+              ),
+              label: "Stats",
+            ),
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
