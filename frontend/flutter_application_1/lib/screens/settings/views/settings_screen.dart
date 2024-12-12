@@ -69,13 +69,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               ),
                             ),
                             backgroundColor: Colors.transparent,
-                            leadingWidth: 30,
-                            leading: IconButton(
-                              icon: const Icon(Icons.arrow_back,
-                                  color: Colors.white),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
+                            leadingWidth: 60,
+                            leading: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 8.0, vertical: 6),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: IconButton(
+                                  icon: Icon(
+                                    Icons.arrow_back,
+                                    color: Colors.grey.shade700,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ),
                             ),
                           ),
                         ],

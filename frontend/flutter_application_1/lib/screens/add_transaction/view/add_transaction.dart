@@ -38,12 +38,6 @@ class _AddTransactionState extends State<AddTransaction>
       ),
     ),
   ];
-  final List<String> items = [
-    'Item1',
-    'Item2',
-    'Item3',
-    'Item4',
-  ];
 
   String? selectedValue;
   @override
@@ -57,7 +51,26 @@ class _AddTransactionState extends State<AddTransaction>
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.grey.shade700,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ),
+        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
           child: Column(

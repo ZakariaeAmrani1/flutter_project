@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/data.dart';
+import 'package:flutter_application_1/screens/chat/views/chat_screen.dart';
 import 'package:flutter_application_1/screens/settings/views/settings_screen.dart';
 
 class MainScreen extends StatelessWidget {
@@ -327,6 +328,35 @@ class MainScreen extends StatelessWidget {
                 },
               ),
             ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                const ChatScreen(),
+                          ),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.chat,
+                        color: Colors.grey.shade700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
