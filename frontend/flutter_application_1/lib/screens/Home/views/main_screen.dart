@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/data.dart';
 import 'package:flutter_application_1/screens/chat/views/chat_screen.dart';
 import 'package:flutter_application_1/screens/settings/views/settings_screen.dart';
+import 'package:flutter_application_1/screens/transactions/views/transactions_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -240,7 +241,15 @@ class MainScreen extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) =>
+                              const TransactionsScreen(),
+                        ),
+                      );
+                    },
                     child: const Text(
                       "View all",
                       style: TextStyle(

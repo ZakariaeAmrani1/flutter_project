@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/messages.dart';
+import 'package:flutter_application_1/screens/chat/views/key.dart';
 import 'package:groq_sdk/groq_sdk.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -15,13 +16,11 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final customChat =
-      Groq('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')
-          .startNewChat(GroqModels.llama3_70b,
-              settings: GroqChatSettings(
-                temperature: 0.8, //More creative responses
-                maxTokens: 512, //shorter responses
-              ));
+  final customChat = Groq(APIKEY).startNewChat(GroqModels.llama3_70b,
+      settings: GroqChatSettings(
+        temperature: 0.8, //More creative responses
+        maxTokens: 512, //shorter responses
+      ));
 
   final ChatUser _user = ChatUser(
     id: '1',

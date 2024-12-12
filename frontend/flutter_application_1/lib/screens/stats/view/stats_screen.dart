@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/data.dart';
+import 'package:flutter_application_1/screens/settings/views/settings_screen.dart';
 import 'package:flutter_application_1/screens/stats/view/chart.dart';
+import 'package:flutter_application_1/screens/transactions/views/transactions_screen.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -56,7 +58,15 @@ class _StatsScreenState extends State<StatsScreen>
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) =>
+                              const SettingsScreen(),
+                        ),
+                      );
+                    },
                     icon: Icon(CupertinoIcons.settings,
                         color: Colors.grey.shade700),
                   ),
@@ -159,7 +169,7 @@ class _StatsScreenState extends State<StatsScreen>
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Transactions",
+                                      "Income",
                                       style: TextStyle(
                                         color: Theme.of(context)
                                             .colorScheme
@@ -169,7 +179,15 @@ class _StatsScreenState extends State<StatsScreen>
                                       ),
                                     ),
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute<void>(
+                                            builder: (BuildContext context) =>
+                                                const TransactionsScreen(),
+                                          ),
+                                        );
+                                      },
                                       child: const Text(
                                         "View all",
                                         style: TextStyle(
@@ -323,7 +341,7 @@ class _StatsScreenState extends State<StatsScreen>
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "Transactions",
+                                      "Expenses",
                                       style: TextStyle(
                                         color: Theme.of(context)
                                             .colorScheme
@@ -333,7 +351,15 @@ class _StatsScreenState extends State<StatsScreen>
                                       ),
                                     ),
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute<void>(
+                                            builder: (BuildContext context) =>
+                                                const TransactionsScreen(),
+                                          ),
+                                        );
+                                      },
                                       child: const Text(
                                         "View all",
                                         style: TextStyle(
