@@ -1,14 +1,32 @@
+// ignore_for_file: avoid_print
+
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/data/data.dart';
+import 'package:flutter_application_1/data/iconsgetter.dart';
 import 'package:flutter_application_1/screens/chat/views/chat_screen.dart';
 import 'package:flutter_application_1/screens/settings/views/settings_screen.dart';
 import 'package:flutter_application_1/screens/transactions/views/transactions_screen.dart';
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
+class MainScreen extends StatefulWidget {
+  final Map<String, dynamic> userData;
+  final List<Map<String, dynamic>> transactions;
+  final List<Map<String, dynamic>> chatHistory;
+  const MainScreen(
+      {super.key,
+      required this.userData,
+      required this.transactions,
+      required this.chatHistory}); // Declare the argument you want to pass
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +73,7 @@ class MainScreen extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          "Alexo",
+                          "${widget.userData['username']}",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -245,8 +263,9 @@ class MainScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute<void>(
-                          builder: (BuildContext context) =>
-                              const TransactionsScreen(),
+                          builder: (BuildContext context) => TransactionsScreen(
+                            transactions: widget.transactions,
+                          ),
                         ),
                       );
                     },
@@ -264,7 +283,9 @@ class MainScreen extends StatelessWidget {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: transactionsData.length,
+                itemCount: widget.transactions.length > 8
+                    ? 8
+                    : widget.transactions.length,
                 itemBuilder: (context, int i) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 12.0),
@@ -288,16 +309,19 @@ class MainScreen extends StatelessWidget {
                                   width: 50,
                                   height: 50,
                                   decoration: BoxDecoration(
-                                    color: transactionsData[i]['color'],
+                                    color: Iconsgetter.getColor(
+                                        widget.transactions[i]['id']),
                                     shape: BoxShape.circle,
                                   ),
-                                  child: transactionsData[i]['icon'],
+                                  child: Iconsgetter.getIcon(
+                                      widget.transactions[i]['id']),
                                 ),
                                 const SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  transactionsData[i]['name'],
+                                  Iconsgetter.getName(
+                                      widget.transactions[i]['id']),
                                   style: TextStyle(
                                     fontSize: 14,
                                     color:
@@ -311,7 +335,9 @@ class MainScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  transactionsData[i]['totalAmount'],
+                                  widget.transactions[i]['type'] == "INCOME"
+                                      ? "${widget.transactions[i]['amount'].toStringAsFixed(2)}\$"
+                                      : "- ${widget.transactions[i]['amount'].toStringAsFixed(2)}\$",
                                   style: TextStyle(
                                     fontSize: 14,
                                     color:
@@ -320,7 +346,7 @@ class MainScreen extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  transactionsData[i]['date'],
+                                  widget.transactions[i]['date'],
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
@@ -353,7 +379,7 @@ class MainScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute<void>(
                             builder: (BuildContext context) =>
-                                const ChatScreen(),
+                                ChatScreen(chatHistory: widget.chatHistory),
                           ),
                         );
                       },

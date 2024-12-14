@@ -1,25 +1,28 @@
-// ignore_for_file: prefer_final_fields
+// ignore_for_file: prefer_final_fields, avoid_print, unused_local_variable
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/data/messages.dart';
 import 'package:flutter_application_1/screens/chat/views/key.dart';
 import 'package:groq_sdk/groq_sdk.dart';
+import 'package:http/http.dart' as http;
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+  final List<Map<String, dynamic>> chatHistory;
+  const ChatScreen({super.key, required this.chatHistory});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final String postchatUrl = 'http://192.168.8.146:5000/chatHistory';
   final customChat = Groq(APIKEY).startNewChat(GroqModels.llama3_70b,
       settings: GroqChatSettings(
-        temperature: 0.8, //More creative responses
-        maxTokens: 512, //shorter responses
+        temperature: 0.8,
+        maxTokens: 512,
       ));
 
   final ChatUser _user = ChatUser(
@@ -33,23 +36,30 @@ class _ChatScreenState extends State<ChatScreen> {
     firstName: 'Alexo\'s',
     lastName: 'GPT',
   );
-
   List<ChatMessage> _messages = <ChatMessage>[];
   List<ChatUser> _typingUsers = <ChatUser>[];
   bool _isAnswering = false;
 
   @override
   void initState() {
-    super.initState();
-    for (var message in messages) {
+    customChat.addMessageWithoutSending(
+        'You are a chatbot for a financial assistant.',
+        role: GroqMessageRole.assistant);
+    for (var message in widget.chatHistory) {
       _messages.insert(
         0,
         ChatMessage(
             user: message['role'] == "user" ? _user : _gptChatUser,
-            createdAt: message['date'],
+            createdAt: DateTime.parse(message['date']),
             text: message['text']),
       );
+
+      customChat.addMessageWithoutSending(message['text'],
+          role: message['role'] == "assistant"
+              ? GroqMessageRole.assistant
+              : GroqMessageRole.user);
     }
+    super.initState();
   }
 
   @override
@@ -208,21 +218,28 @@ class _ChatScreenState extends State<ChatScreen> {
                 },
               ),
               onSend: (ChatMessage m) async {
-                customChat.addMessageWithoutSending(
-                    'You are a chatbot for a financial assistant.',
-                    role: GroqMessageRole.assistant);
-                for (var message in messages) {
-                  customChat.addMessageWithoutSending(message['text'],
-                      role: message['role'] == "assistant"
-                          ? GroqMessageRole.assistant
-                          : GroqMessageRole.user);
-                }
-
                 setState(() {
                   _messages.insert(0, m);
                   _typingUsers.add(_gptChatUser);
                   _isAnswering = true;
                 });
+                try {
+                  var data = {
+                    'role': "user",
+                    'date': DateTime.now().toString(),
+                    'text': m.text
+                  };
+                  final chatResponse = await http.post(
+                    Uri.parse(postchatUrl),
+                    headers: {'Content-Type': 'application/json'},
+                    body: json.encode(data),
+                  );
+                  setState(() {
+                    widget.chatHistory.add(data);
+                  });
+                } catch (e) {
+                  print('Error fetching user data: $e');
+                }
 
                 final (response, usage) = await customChat.sendMessage(m.text,
                     role: GroqMessageRole.user);
@@ -236,6 +253,24 @@ class _ChatScreenState extends State<ChatScreen> {
                               createdAt: DateTime.now(),
                               text: element.message));
                     });
+
+                    try {
+                      var data = {
+                        'role': "assitant",
+                        'date': DateTime.now().toString(),
+                        'text': element.message
+                      };
+                      final chatResponse = await http.post(
+                        Uri.parse(postchatUrl),
+                        headers: {'Content-Type': 'application/json'},
+                        body: json.encode(data),
+                      );
+                      setState(() {
+                        widget.chatHistory.add(data);
+                      });
+                    } catch (e) {
+                      print('Error fetching user data: $e');
+                    }
                   }
                 }
                 setState(() {

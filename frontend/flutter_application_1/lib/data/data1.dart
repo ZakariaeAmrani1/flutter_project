@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 List<Map<String, dynamic>> transactioncategorydata1 = [
   {
+    'id': 0,
     'icon': const FaIcon(
       FontAwesomeIcons.burger,
       color: Colors.white,
@@ -12,6 +13,7 @@ List<Map<String, dynamic>> transactioncategorydata1 = [
     'name': 'Food',
   },
   {
+    'id': 1,
     'icon': const FaIcon(
       FontAwesomeIcons.bagShopping,
       color: Colors.white,
@@ -21,6 +23,7 @@ List<Map<String, dynamic>> transactioncategorydata1 = [
     'name': 'Shopping',
   },
   {
+    'id': 2,
     'icon': const FaIcon(
       FontAwesomeIcons.heartCircleCheck,
       color: Colors.white,
@@ -30,6 +33,7 @@ List<Map<String, dynamic>> transactioncategorydata1 = [
     'name': 'Health',
   },
   {
+    'id': 3,
     'icon': const FaIcon(
       FontAwesomeIcons.plane,
       color: Colors.white,

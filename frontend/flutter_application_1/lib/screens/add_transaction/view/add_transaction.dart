@@ -1,5 +1,6 @@
-// ignore_for_file: unnecessary_import, prefer_const_constructors, sized_box_for_whitespace, unused_field, use_build_context_synchronously, prefer_final_fields, sort_child_properties_last
+// ignore_for_file: unnecessary_import, prefer_const_constructors, sized_box_for_whitespace, unused_field, use_build_context_synchronously, prefer_final_fields, sort_child_properties_last, avoid_print, unused_local_variable
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -10,9 +11,11 @@ import 'package:flutter_holo_date_picker/date_picker.dart';
 import 'package:flutter_holo_date_picker/i18n/date_picker_i18n.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:http/http.dart' as http;
 
 class AddTransaction extends StatefulWidget {
-  const AddTransaction({super.key});
+  final Function(Map<String, Object?> data) onUpdate;
+  const AddTransaction({super.key, required this.onUpdate});
 
   @override
   State<AddTransaction> createState() => _AddTransactionState();
@@ -20,9 +23,9 @@ class AddTransaction extends StatefulWidget {
 
 class _AddTransactionState extends State<AddTransaction>
     with SingleTickerProviderStateMixin {
+  final String posttransactionUrl = 'http://192.168.8.146:5000/transactions';
   final TextEditingController textEditingController = TextEditingController();
   int _transactionType = 0;
-  String _transactionCategory = "";
   String? selectedDate;
   final _tabs = [
     Tab(
@@ -38,7 +41,7 @@ class _AddTransactionState extends State<AddTransaction>
       ),
     ),
   ];
-
+  double? transactionAmount;
   String? selectedValue;
   @override
   void dispose() {
@@ -98,6 +101,11 @@ class _AddTransactionState extends State<AddTransaction>
                     color: Colors.grey, // Text color
                   ),
                   keyboardType: TextInputType.number,
+                  onChanged: (value) {
+                    setState(() {
+                      transactionAmount = double.parse(value);
+                    });
+                  },
                   decoration: InputDecoration(
                     hintText: "0",
                     contentPadding: const EdgeInsets.symmetric(
@@ -230,7 +238,7 @@ class _AddTransactionState extends State<AddTransaction>
                       items: transactioncategorydata1
                           .map(
                             (item) => DropdownMenuItem<String>(
-                              value: item['name'],
+                              value: item['id'].toString(),
                               child: Row(
                                 children: [
                                   Container(
@@ -274,7 +282,7 @@ class _AddTransactionState extends State<AddTransaction>
                         height: 50,
                       ),
                       dropdownStyleData: const DropdownStyleData(
-                          maxHeight: 200,
+                          maxHeight: 250,
                           decoration: BoxDecoration(color: Colors.white)),
                       dropdownSearchData: DropdownSearchData(
                         searchController: textEditingController,
@@ -393,7 +401,25 @@ class _AddTransactionState extends State<AddTransaction>
             width: double.infinity,
             height: 60,
             child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  var data = {
+                    'id': int.parse(selectedValue!),
+                    'amount': transactionAmount,
+                    'date': selectedDate,
+                    'type': _transactionType == 0 ? "INCOME" : "EXPENSE"
+                  };
+                  final chatResponse = await http.post(
+                    Uri.parse(posttransactionUrl),
+                    headers: {'Content-Type': 'application/json'},
+                    body: json.encode(data),
+                  );
+                  widget.onUpdate(data);
+                  Navigator.pop(context);
+                } catch (e) {
+                  print('Error fetching user data: $e');
+                }
+              },
               child: Container(
                 width: double.infinity,
                 height: 60,

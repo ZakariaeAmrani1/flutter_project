@@ -1,9 +1,10 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/data/data.dart';
+import 'package:flutter_application_1/data/iconsgetter.dart';
 
 class TransactionsScreen extends StatefulWidget {
-  const TransactionsScreen({super.key});
+  final List<Map<String, dynamic>> transactions;
+  const TransactionsScreen({super.key, required this.transactions});
 
   @override
   State<TransactionsScreen> createState() => _TransactionsScreenState();
@@ -23,9 +24,11 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   ];
   String? selectedType = "All";
   String? selectedDate = "All";
-
-  void setSelectedType(String? value) {
-    setState(() => selectedType = value);
+  List<Map<String, dynamic>> filtredTransaction = [];
+  @override
+  void initState() {
+    filtredTransaction = widget.transactions;
+    super.initState();
   }
 
   @override
@@ -136,6 +139,19 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                             onChanged: (String? value) {
                               setState(() {
                                 selectedType = value;
+                                if (selectedType == "Income") {
+                                  filtredTransaction = widget.transactions
+                                      .where((transaction) =>
+                                          transaction['type'] == "INCOME")
+                                      .toList();
+                                } else if (selectedType == "Expenses") {
+                                  filtredTransaction = widget.transactions
+                                      .where((transaction) =>
+                                          transaction['type'] == "EXPENSE")
+                                      .toList();
+                                } else {
+                                  filtredTransaction = widget.transactions;
+                                }
                               });
                             },
                             buttonStyleData: const ButtonStyleData(
@@ -274,7 +290,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
             ),
             Expanded(
               child: ListView.builder(
-                itemCount: transactionsData.length,
+                itemCount: filtredTransaction.length,
                 itemBuilder: (context, int i) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 12.0),
@@ -298,16 +314,19 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                   width: 50,
                                   height: 50,
                                   decoration: BoxDecoration(
-                                    color: transactionsData[i]['color'],
+                                    color: Iconsgetter.getColor(
+                                        filtredTransaction[i]['id']),
                                     shape: BoxShape.circle,
                                   ),
-                                  child: transactionsData[i]['icon'],
+                                  child: Iconsgetter.getIcon(
+                                      filtredTransaction[i]['id']),
                                 ),
                                 const SizedBox(
                                   width: 10,
                                 ),
                                 Text(
-                                  transactionsData[i]['name'],
+                                  Iconsgetter.getName(
+                                      filtredTransaction[i]['id']),
                                   style: TextStyle(
                                     fontSize: 14,
                                     color:
@@ -321,7 +340,9 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  transactionsData[i]['totalAmount'],
+                                  filtredTransaction[i]['type'] == "INCOME"
+                                      ? "${filtredTransaction[i]['amount'].toStringAsFixed(2)}\$"
+                                      : "- ${filtredTransaction[i]['amount'].toStringAsFixed(2)}\$",
                                   style: TextStyle(
                                     fontSize: 14,
                                     color:
@@ -330,7 +351,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                   ),
                                 ),
                                 Text(
-                                  transactionsData[i]['date'],
+                                  widget.transactions[i]['date'],
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,

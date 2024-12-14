@@ -1,0 +1,44 @@
+[
+    {
+        "id": 0,
+        "amount": 258.0,
+        "date": "2024-12-14",
+        "type": "INCOME"
+    },
+    {
+        "id": 3,
+        "amount": 9000.0,
+        "date": "2024-12-14",
+        "type": "INCOME"
+    },
+    {
+        "id": 1,
+        "amount": 333.0,
+        "date": "2024-12-14",
+        "type": "EXPENSE"
+    },
+    {
+        "id": 0,
+        "amount": 45.0,
+        "date": "today",
+        "type": "EXPENSE"
+    },
+    {
+        "id": 1,
+        "amount": 45.0,
+        "date": "today",
+        "type": "EXPENSE"
+    },
+    {
+        "id": 2,
+        "amount": 45.0,
+        "date": "today",
+        "type": "EXPENSE"
+    },
+    {
+        "id": 3,
+        "amount": 45.0,
+        "date": "today",
+        "type": "EXPENSE"
+    }
+]

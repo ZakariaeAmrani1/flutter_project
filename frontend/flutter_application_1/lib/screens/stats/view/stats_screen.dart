@@ -180,13 +180,13 @@ class _StatsScreenState extends State<StatsScreen>
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute<void>(
-                                            builder: (BuildContext context) =>
-                                                const TransactionsScreen(),
-                                          ),
-                                        );
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute<void>(
+                                        //     builder: (BuildContext context) =>
+                                        //         const TransactionsScreen(),
+                                        //   ),
+                                        // );
                                       },
                                       child: const Text(
                                         "View all",
@@ -352,13 +352,13 @@ class _StatsScreenState extends State<StatsScreen>
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute<void>(
-                                            builder: (BuildContext context) =>
-                                                const TransactionsScreen(),
-                                          ),
-                                        );
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute<void>(
+                                        //     builder: (BuildContext context) =>
+                                        //         const TransactionsScreen(),
+                                        //   ),
+                                        // );
                                       },
                                       child: const Text(
                                         "View all",
