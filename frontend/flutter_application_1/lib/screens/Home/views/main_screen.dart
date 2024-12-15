@@ -46,8 +46,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Padding(
+    return Scaffold(
+      body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
         child: Column(
           children: [
@@ -383,7 +383,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 30.0),
+              padding: const EdgeInsets.only(bottom: 20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
@@ -410,7 +410,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
