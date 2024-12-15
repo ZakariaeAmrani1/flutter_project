@@ -102,6 +102,14 @@ def get_chat_data():
     print("Getting chat history!")
     return jsonify(data), 200
 
+@app.route('/user', methods=['POST'])
+def store_user():
+    incoming_data = request.get_json()
+    if not incoming_data:
+        return jsonify({'error': 'No data provided'}), 400
+    write_user_data(incoming_data)
+    return jsonify({'message': 'Data stored successfully', 'data': incoming_data}), 201
+
 
 @app.route('/chatHistory', methods=['POST'])
 def store_chat():

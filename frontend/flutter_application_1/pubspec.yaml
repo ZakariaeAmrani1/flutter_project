@@ -51,6 +51,7 @@ dependencies:
   flutter_dotenv: ^5.2.1
   http:
   loading_animation_widget: ^1.3.0
+  alert_info: ^0.0.2
 
 dev_dependencies:
   flutter_test:

@@ -2,13 +2,16 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/data/data.dart';
+import 'package:flutter_application_1/data/iconsgetter.dart';
 import 'package:flutter_application_1/screens/settings/views/settings_screen.dart';
 import 'package:flutter_application_1/screens/stats/view/chart.dart';
 import 'package:flutter_application_1/screens/transactions/views/transactions_screen.dart';
 
 class StatsScreen extends StatefulWidget {
-  const StatsScreen({super.key});
+  final List<Map<String, dynamic>> transactions;
+  final Map<String, dynamic> userData;
+  const StatsScreen(
+      {super.key, required this.transactions, required this.userData});
 
   @override
   State<StatsScreen> createState() => _StatsScreenState();
@@ -16,6 +19,10 @@ class StatsScreen extends StatefulWidget {
 
 class _StatsScreenState extends State<StatsScreen>
     with SingleTickerProviderStateMixin {
+  void updateuser(data) {
+    setState(() {});
+  }
+
   final _tabs = [
     Tab(
       child: Container(
@@ -30,6 +37,19 @@ class _StatsScreenState extends State<StatsScreen>
       ),
     ),
   ];
+  List<Map<String, dynamic>> incomeTransactions = [];
+  List<Map<String, dynamic>> expenseTransactions = [];
+
+  @override
+  void initState() {
+    incomeTransactions = widget.transactions
+        .where((transaction) => transaction['type'] == "INCOME")
+        .toList();
+    expenseTransactions = widget.transactions
+        .where((transaction) => transaction['type'] == "EXPENSE")
+        .toList();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +82,10 @@ class _StatsScreenState extends State<StatsScreen>
                       Navigator.push(
                         context,
                         MaterialPageRoute<void>(
-                          builder: (BuildContext context) =>
-                              const SettingsScreen(),
+                          builder: (BuildContext context) => SettingsScreen(
+                            userData: widget.userData,
+                            onUpdate: updateuser,
+                          ),
                         ),
                       );
                     },
@@ -180,13 +202,16 @@ class _StatsScreenState extends State<StatsScreen>
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute<void>(
-                                        //     builder: (BuildContext context) =>
-                                        //         const TransactionsScreen(),
-                                        //   ),
-                                        // );
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute<void>(
+                                            builder: (BuildContext context) =>
+                                                TransactionsScreen(
+                                              transactions: widget.transactions,
+                                              type: "Income",
+                                            ),
+                                          ),
+                                        );
                                       },
                                       child: const Text(
                                         "View all",
@@ -200,13 +225,12 @@ class _StatsScreenState extends State<StatsScreen>
                                   ],
                                 ),
                                 const SizedBox(
-                                    height: 20), // Add spacing between sections
+                                  height: 20,
+                                ),
                                 ListView.builder(
-                                  physics:
-                                      const NeverScrollableScrollPhysics(), // Disable inner scrolling
-                                  shrinkWrap:
-                                      true, // Let ListView fit its content
-                                  itemCount: transactionsData.length,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: incomeTransactions.length,
                                   itemBuilder: (context, int i) {
                                     return Padding(
                                       padding:
@@ -233,16 +257,23 @@ class _StatsScreenState extends State<StatsScreen>
                                                     width: 50,
                                                     height: 50,
                                                     decoration: BoxDecoration(
-                                                      color: transactionsData[i]
-                                                          ['color'],
+                                                      color:
+                                                          Iconsgetter.getColor(
+                                                              incomeTransactions[
+                                                                  i]['id']),
                                                       shape: BoxShape.circle,
                                                     ),
-                                                    child: transactionsData[i]
-                                                        ['icon'],
+                                                    child: Iconsgetter.getIcon(
+                                                        incomeTransactions[i]
+                                                            ['id']),
                                                   ),
-                                                  const SizedBox(width: 10),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
                                                   Text(
-                                                    transactionsData[i]['name'],
+                                                    Iconsgetter.getName(
+                                                        incomeTransactions[i]
+                                                            ['id']),
                                                     style: TextStyle(
                                                       fontSize: 14,
                                                       color: Theme.of(context)
@@ -251,7 +282,7 @@ class _StatsScreenState extends State<StatsScreen>
                                                       fontWeight:
                                                           FontWeight.w500,
                                                     ),
-                                                  ),
+                                                  )
                                                 ],
                                               ),
                                               Column(
@@ -259,8 +290,11 @@ class _StatsScreenState extends State<StatsScreen>
                                                     CrossAxisAlignment.end,
                                                 children: [
                                                   Text(
-                                                    transactionsData[i]
-                                                        ['totalAmount'],
+                                                    incomeTransactions[i]
+                                                                ['type'] ==
+                                                            "INCOME"
+                                                        ? "${incomeTransactions[i]['amount'].toStringAsFixed(2)}\$"
+                                                        : "- ${incomeTransactions[i]['amount'].toStringAsFixed(2)}\$",
                                                     style: TextStyle(
                                                       fontSize: 14,
                                                       color: Theme.of(context)
@@ -271,7 +305,8 @@ class _StatsScreenState extends State<StatsScreen>
                                                     ),
                                                   ),
                                                   Text(
-                                                    transactionsData[i]['date'],
+                                                    widget.transactions[i]
+                                                        ['date'],
                                                     style: const TextStyle(
                                                       fontSize: 14,
                                                       color: Colors.grey,
@@ -352,13 +387,16 @@ class _StatsScreenState extends State<StatsScreen>
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute<void>(
-                                        //     builder: (BuildContext context) =>
-                                        //         const TransactionsScreen(),
-                                        //   ),
-                                        // );
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute<void>(
+                                            builder: (BuildContext context) =>
+                                                TransactionsScreen(
+                                              transactions: widget.transactions,
+                                              type: "Expenses",
+                                            ),
+                                          ),
+                                        );
                                       },
                                       child: const Text(
                                         "View all",
@@ -372,13 +410,14 @@ class _StatsScreenState extends State<StatsScreen>
                                   ],
                                 ),
                                 const SizedBox(
-                                    height: 20), // Add spacing between sections
+                                  height: 20,
+                                ),
                                 ListView.builder(
                                   physics:
                                       const NeverScrollableScrollPhysics(), // Disable inner scrolling
                                   shrinkWrap:
                                       true, // Let ListView fit its content
-                                  itemCount: transactionsData.length,
+                                  itemCount: expenseTransactions.length,
                                   itemBuilder: (context, int i) {
                                     return Padding(
                                       padding:
@@ -405,16 +444,22 @@ class _StatsScreenState extends State<StatsScreen>
                                                     width: 50,
                                                     height: 50,
                                                     decoration: BoxDecoration(
-                                                      color: transactionsData[i]
-                                                          ['color'],
+                                                      color: Iconsgetter.getColor(
+                                                          expenseTransactions[i]
+                                                              ['id']),
                                                       shape: BoxShape.circle,
                                                     ),
-                                                    child: transactionsData[i]
-                                                        ['icon'],
+                                                    child: Iconsgetter.getIcon(
+                                                        expenseTransactions[i]
+                                                            ['id']),
                                                   ),
-                                                  const SizedBox(width: 10),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
                                                   Text(
-                                                    transactionsData[i]['name'],
+                                                    Iconsgetter.getName(
+                                                        expenseTransactions[i]
+                                                            ['id']),
                                                     style: TextStyle(
                                                       fontSize: 14,
                                                       color: Theme.of(context)
@@ -423,7 +468,7 @@ class _StatsScreenState extends State<StatsScreen>
                                                       fontWeight:
                                                           FontWeight.w500,
                                                     ),
-                                                  ),
+                                                  )
                                                 ],
                                               ),
                                               Column(
@@ -431,8 +476,11 @@ class _StatsScreenState extends State<StatsScreen>
                                                     CrossAxisAlignment.end,
                                                 children: [
                                                   Text(
-                                                    transactionsData[i]
-                                                        ['totalAmount'],
+                                                    expenseTransactions[i]
+                                                                ['type'] ==
+                                                            "INCOME"
+                                                        ? "${expenseTransactions[i]['amount'].toStringAsFixed(2)}\$"
+                                                        : "- ${expenseTransactions[i]['amount'].toStringAsFixed(2)}\$",
                                                     style: TextStyle(
                                                       fontSize: 14,
                                                       color: Theme.of(context)
@@ -443,7 +491,8 @@ class _StatsScreenState extends State<StatsScreen>
                                                     ),
                                                   ),
                                                   Text(
-                                                    transactionsData[i]['date'],
+                                                    widget.transactions[i]
+                                                        ['date'],
                                                     style: const TextStyle(
                                                       fontSize: 14,
                                                       color: Colors.grey,

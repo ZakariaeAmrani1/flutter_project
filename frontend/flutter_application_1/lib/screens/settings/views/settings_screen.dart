@@ -1,5 +1,6 @@
-// ignore_for_file: sort_child_properties_last
+// ignore_for_file: sort_child_properties_last, avoid_print, unused_local_variable, use_build_context_synchronously
 
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -8,18 +9,36 @@ import 'package:flutter_holo_date_picker/date_picker.dart';
 import 'package:flutter_holo_date_picker/i18n/date_picker_i18n.dart';
 import 'package:intl/intl.dart';
 import 'package:nation_code_picker/nation_code_picker.dart';
+import 'package:http/http.dart' as http;
 
 class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+  final Map<String, dynamic> userData;
+  final Function(Map<String, Object?> data) onUpdate;
+  const SettingsScreen(
+      {super.key, required this.userData, required this.onUpdate});
 
   @override
   State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  String? selectedGender = "Male";
+  final String postuserUrl = 'http://192.168.8.146:5000/user';
+  String? username;
+  String? email;
+  String? selectedGender;
   String? selectedDate;
+  String? phonenumber;
   NationCodes _selectedNationCode = NationCodes.ma;
+
+  @override
+  void initState() {
+    username = widget.userData['username'];
+    email = widget.userData['email'];
+    phonenumber = widget.userData['phone'];
+    selectedGender = widget.userData['gender'];
+    selectedDate = widget.userData['birthday'];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +139,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: TextFormField(
+                initialValue: username,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding:
@@ -137,7 +157,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(16),
                 ],
-                onChanged: (value) {},
+                onChanged: (value) {
+                  setState(() {
+                    username = value;
+                  });
+                },
               ),
             ),
             const SizedBox(
@@ -151,6 +175,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 borderRadius: BorderRadius.circular(15),
               ),
               child: TextFormField(
+                initialValue: email,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   contentPadding:
@@ -168,7 +193,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(16),
                 ],
-                onChanged: (value) {},
+                onChanged: (value) {
+                  setState(() {
+                    email = value;
+                  });
+                },
               ),
             ),
             const SizedBox(
@@ -210,8 +239,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       selectedDate == null
                           ? "Birdth Day"
                           : selectedDate.toString(),
-                      style: const TextStyle(
-                        color: Colors.grey,
+                      style: TextStyle(
+                        color: Colors.grey.shade800,
                         fontSize: 14,
                       ),
                     ),
@@ -257,6 +286,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     Expanded(
                       child: TextFormField(
+                        initialValue: phonenumber,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Phone Number',
@@ -274,7 +304,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           FilteringTextInputFormatter.digitsOnly,
                           LengthLimitingTextInputFormatter(16),
                         ],
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          setState(() {
+                            phonenumber = value;
+                          });
+                        },
                       ),
                     ),
                   ],
@@ -380,7 +414,26 @@ class _SettingsScreenState extends State<SettingsScreen> {
             width: double.infinity,
             height: 60,
             child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () async {
+                try {
+                  var data = {
+                    'username': username,
+                    'email': email,
+                    'birthday': selectedDate,
+                    'phone': phonenumber,
+                    'gender': selectedGender
+                  };
+                  final userResponse = await http.post(
+                    Uri.parse(postuserUrl),
+                    headers: {'Content-Type': 'application/json'},
+                    body: json.encode(data),
+                  );
+                  widget.onUpdate(data);
+                  Navigator.pop(context);
+                } catch (e) {
+                  print('Error fetching user data: $e');
+                }
+              },
               child: Container(
                 width: double.infinity,
                 height: 60,

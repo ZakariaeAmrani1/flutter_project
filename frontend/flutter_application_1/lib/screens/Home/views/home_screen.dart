@@ -10,6 +10,7 @@ import 'package:flutter_application_1/screens/add_transaction/view/add_transacti
 import 'package:flutter_application_1/screens/stats/view/stats_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:alert_info/alert_info.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -74,6 +75,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void updateTransaction(data) {
+    AlertInfo.show(
+      context: context,
+      text: 'Transaction added successfelly.',
+      typeInfo: TypeInfo.success,
+      backgroundColor: Colors.white,
+      textColor: Colors.grey.shade800,
+    );
     setState(() {
       transactions.insert(0, data);
     });
@@ -176,7 +184,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     transactions: transactions,
                     chatHistory: chatHistory,
                   )
-                : const StatsScreen(),
+                : StatsScreen(
+                    transactions: transactions,
+                    userData: userData,
+                  ),
           );
   }
 }

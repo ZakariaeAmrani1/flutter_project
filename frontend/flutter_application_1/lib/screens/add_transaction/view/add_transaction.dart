@@ -409,7 +409,7 @@ class _AddTransactionState extends State<AddTransaction>
                     'date': selectedDate,
                     'type': _transactionType == 0 ? "INCOME" : "EXPENSE"
                   };
-                  final chatResponse = await http.post(
+                  final transactionResponse = await http.post(
                     Uri.parse(posttransactionUrl),
                     headers: {'Content-Type': 'application/json'},
                     body: json.encode(data),

@@ -4,7 +4,9 @@ import 'package:flutter_application_1/data/iconsgetter.dart';
 
 class TransactionsScreen extends StatefulWidget {
   final List<Map<String, dynamic>> transactions;
-  const TransactionsScreen({super.key, required this.transactions});
+  final String type;
+  const TransactionsScreen(
+      {super.key, required this.transactions, required this.type});
 
   @override
   State<TransactionsScreen> createState() => _TransactionsScreenState();
@@ -22,12 +24,25 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
     'This Week',
     'This Mounth',
   ];
-  String? selectedType = "All";
+  String? selectedType;
   String? selectedDate = "All";
   List<Map<String, dynamic>> filtredTransaction = [];
   @override
   void initState() {
-    filtredTransaction = widget.transactions;
+    selectedType = widget.type;
+    setState(() {
+      if (selectedType == "Income") {
+        filtredTransaction = widget.transactions
+            .where((transaction) => transaction['type'] == "INCOME")
+            .toList();
+      } else if (selectedType == "Expenses") {
+        filtredTransaction = widget.transactions
+            .where((transaction) => transaction['type'] == "EXPENSE")
+            .toList();
+      } else {
+        filtredTransaction = widget.transactions;
+      }
+    });
     super.initState();
   }
 

@@ -2,6 +2,7 @@
 
 import 'dart:math';
 
+import 'package:alert_info/alert_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/iconsgetter.dart';
@@ -23,8 +24,23 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  String username = "";
+  void updateuser(data) {
+    AlertInfo.show(
+      context: context,
+      text: 'Profile updated successfelly.',
+      typeInfo: TypeInfo.success,
+      backgroundColor: Colors.white,
+      textColor: Colors.grey.shade800,
+    );
+    setState(() {
+      username = data['username'];
+    });
+  }
+
   @override
   void initState() {
+    username = widget.userData['username'];
     super.initState();
   }
 
@@ -73,7 +89,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                         ),
                         Text(
-                          "${widget.userData['username']}",
+                          username,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -94,8 +110,10 @@ class _MainScreenState extends State<MainScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute<void>(
-                          builder: (BuildContext context) =>
-                              const SettingsScreen(),
+                          builder: (BuildContext context) => SettingsScreen(
+                            userData: widget.userData,
+                            onUpdate: updateuser,
+                          ),
                         ),
                       );
                     },
@@ -265,6 +283,7 @@ class _MainScreenState extends State<MainScreen> {
                         MaterialPageRoute<void>(
                           builder: (BuildContext context) => TransactionsScreen(
                             transactions: widget.transactions,
+                            type: "All",
                           ),
                         ),
                       );

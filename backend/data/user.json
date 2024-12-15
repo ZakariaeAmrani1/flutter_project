@@ -1,8 +1,7 @@
-
 {
     "username": "Alexo",
-    "email": "alexo@gmail.com",
-    "bithday": "27-11-2003",
-    "phone": "0677401846",
+    "email": "test@gmail.com",
+    "birthday": "2020-01-01",
+    "phone": "677401846",
     "gender": "Male"
 }
