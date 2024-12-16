@@ -421,7 +421,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     'email': email,
                     'birthday': selectedDate,
                     'phone': phonenumber,
-                    'gender': selectedGender
+                    'gender': selectedGender,
+                    "balance": widget.userData['balance'],
+                    "income": widget.userData['income'],
+                    "expense": widget.userData['expense']
                   };
                   final userResponse = await http.post(
                     Uri.parse(postuserUrl),

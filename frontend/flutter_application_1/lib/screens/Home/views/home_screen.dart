@@ -146,6 +146,11 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     fetchUserData();
     fetchStatsData();
+
+    print(userData);
+    print(transactions);
+    print(incomeStats);
+    print(expenseStats);
     super.initState();
   }
 
