@@ -3,7 +3,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class MyChart extends StatefulWidget {
-  const MyChart({super.key});
+  final List<dynamic> stats;
+  const MyChart({super.key, required this.stats});
 
   @override
   State<MyChart> createState() => _MyChartState();
@@ -31,28 +32,26 @@ class _MyChartState extends State<MyChart> {
           ),
           width: 10,
           backDrawRodData: BackgroundBarChartRodData(
-              show: true, toY: 5, color: Colors.grey.shade300))
+              show: true, toY: widget.stats[7], color: Colors.grey.shade300))
     ]);
   }
 
-  List<BarChartGroupData> showingGroups() => List.generate(8, (i) {
+  List<BarChartGroupData> showingGroups() => List.generate(7, (i) {
         switch (i) {
           case 0:
-            return makeGroupData(0, 4);
+            return makeGroupData(0, widget.stats[0].toDouble());
           case 1:
-            return makeGroupData(1, 3);
+            return makeGroupData(1, widget.stats[1].toDouble());
           case 2:
-            return makeGroupData(2, 2);
+            return makeGroupData(2, widget.stats[2].toDouble());
           case 3:
-            return makeGroupData(3, 4.5);
+            return makeGroupData(3, widget.stats[3].toDouble());
           case 4:
-            return makeGroupData(4, 3.8);
+            return makeGroupData(4, widget.stats[4].toDouble());
           case 5:
-            return makeGroupData(5, 1.5);
+            return makeGroupData(5, widget.stats[5].toDouble());
           case 6:
-            return makeGroupData(6, 4);
-          case 7:
-            return makeGroupData(7, 3.8);
+            return makeGroupData(6, widget.stats[6].toDouble());
           default:
             return throw Error();
         }
@@ -74,7 +73,7 @@ class _MyChartState extends State<MyChart> {
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 38,
+            reservedSize: 45,
             getTitlesWidget: leftTitles,
           ),
         ),
@@ -115,9 +114,6 @@ class _MyChartState extends State<MyChart> {
       case 6:
         text = const Text('07', style: style);
         break;
-      case 7:
-        text = const Text('08', style: style);
-        break;
       default:
         text = const Text('', style: style);
         break;
@@ -137,15 +133,28 @@ class _MyChartState extends State<MyChart> {
     );
     String text;
     if (value == 0) {
-      text = '1K';
-    } else if (value == 2) {
-      text = '2K';
-    } else if (value == 3) {
-      text = '3K';
-    } else if (value == 4) {
-      text = '4K';
-    } else if (value == 5) {
-      text = '5K';
+      text = '0';
+    } else if (value == 100) {
+      text = '100';
+    } else if (value == 200) {
+      text = '200';
+    } else if (value == 300) {
+      text = '300';
+    } else if (value == 400) {
+      text = '400';
+    } else if (value == 500) {
+      text = '500';
+    } else if (value == 600) {
+      text = '600';
+    } else if (value == 700) {
+      text = '700';
+    } else if (value == 800) {
+      text = '800';
+    } else if (value == 900) {
+      text = '900';
+    } else if (value >= 1000 &&
+        widget.stats[7] - value > value / (widget.stats[7] / 10)) {
+      text = '${(value / 1000).toStringAsFixed(1)}K';
     } else {
       return Container();
     }

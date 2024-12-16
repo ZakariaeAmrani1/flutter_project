@@ -14,17 +14,18 @@ class MainScreen extends StatefulWidget {
   final Map<String, dynamic> userData;
   final List<Map<String, dynamic>> transactions;
   final List<Map<String, dynamic>> chatHistory;
+  final Function(Map<String, Object?> data) onUpdate;
   const MainScreen(
       {super.key,
       required this.userData,
       required this.transactions,
-      required this.chatHistory}); // Declare the argument you want to pass
+      required this.chatHistory,
+      required this.onUpdate}); // Declare the argument you want to pass
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  String username = "";
   void updateuser(data) {
     AlertInfo.show(
       context: context,
@@ -33,14 +34,11 @@ class _MainScreenState extends State<MainScreen> {
       backgroundColor: Colors.white,
       textColor: Colors.grey.shade800,
     );
-    setState(() {
-      username = data['username'];
-    });
+    widget.onUpdate(data);
   }
 
   @override
   void initState() {
-    username = widget.userData['username'];
     super.initState();
   }
 
@@ -89,7 +87,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                         ),
                         Text(
-                          username,
+                          "${widget.userData['username']}",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -158,9 +156,9 @@ class _MainScreenState extends State<MainScreen> {
                       fontSize: 16,
                     ),
                   ),
-                  const Text(
-                    "\$ 400.000",
-                    style: TextStyle(
+                  Text(
+                    "\$ ${widget.userData['balance'].toStringAsFixed(2)}",
+                    style: const TextStyle(
                       fontSize: 40,
                       color: Colors.white,
                       fontWeight: FontWeight.w600,
@@ -193,10 +191,10 @@ class _MainScreenState extends State<MainScreen> {
                             const SizedBox(
                               width: 12,
                             ),
-                            const Column(
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   "Income",
                                   style: TextStyle(
                                     color: Colors.white,
@@ -205,8 +203,8 @@ class _MainScreenState extends State<MainScreen> {
                                   ),
                                 ),
                                 Text(
-                                  "25000000",
-                                  style: TextStyle(
+                                  "\$ ${widget.userData['income'].toStringAsFixed(2)}",
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14,
@@ -234,10 +232,10 @@ class _MainScreenState extends State<MainScreen> {
                             const SizedBox(
                               width: 12,
                             ),
-                            const Column(
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   "Expenses",
                                   style: TextStyle(
                                     color: Colors.white,
@@ -246,8 +244,8 @@ class _MainScreenState extends State<MainScreen> {
                                   ),
                                 ),
                                 Text(
-                                  "25000000",
-                                  style: TextStyle(
+                                  "\$ ${widget.userData['expense'].toStringAsFixed(2)}",
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 14,

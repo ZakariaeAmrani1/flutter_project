@@ -10,8 +10,14 @@ import 'package:flutter_application_1/screens/transactions/views/transactions_sc
 class StatsScreen extends StatefulWidget {
   final List<Map<String, dynamic>> transactions;
   final Map<String, dynamic> userData;
+  final List<dynamic> incomeStats;
+  final List<dynamic> expenseStats;
   const StatsScreen(
-      {super.key, required this.transactions, required this.userData});
+      {super.key,
+      required this.transactions,
+      required this.userData,
+      required this.incomeStats,
+      required this.expenseStats});
 
   @override
   State<StatsScreen> createState() => _StatsScreenState();
@@ -158,7 +164,7 @@ class _StatsScreenState extends State<StatsScreen>
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text(
-                                          "Today",
+                                          "Total Incomes",
                                           style: TextStyle(
                                             color: Colors.grey.shade700,
                                             fontSize: 18,
@@ -166,9 +172,9 @@ class _StatsScreenState extends State<StatsScreen>
                                           ),
                                         ),
                                         const SizedBox(height: 5),
-                                        const Text(
-                                          "3500 \$",
-                                          style: TextStyle(
+                                        Text(
+                                          "\$ ${widget.incomeStats[7].toStringAsFixed(2)}",
+                                          style: const TextStyle(
                                             color:
                                                 Color.fromARGB(255, 20, 37, 63),
                                             fontSize: 22,
@@ -176,10 +182,11 @@ class _StatsScreenState extends State<StatsScreen>
                                           ),
                                         ),
                                         const SizedBox(height: 20),
-                                        const SizedBox(
-                                          height:
-                                              200, // Constrain the height of the chart
-                                          child: MyChart(),
+                                        SizedBox(
+                                          height: 200,
+                                          child: MyChart(
+                                            stats: widget.incomeStats,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -344,7 +351,7 @@ class _StatsScreenState extends State<StatsScreen>
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text(
-                                          "Today",
+                                          "Total Expenses",
                                           style: TextStyle(
                                             color: Colors.grey.shade700,
                                             fontSize: 18,
@@ -353,7 +360,7 @@ class _StatsScreenState extends State<StatsScreen>
                                         ),
                                         const SizedBox(height: 5),
                                         Text(
-                                          "3500 \$",
+                                          "\$ ${widget.expenseStats[7].toStringAsFixed(2)}",
                                           style: TextStyle(
                                             color: Colors.grey.shade900,
                                             fontSize: 22,
@@ -361,10 +368,12 @@ class _StatsScreenState extends State<StatsScreen>
                                           ),
                                         ),
                                         const SizedBox(height: 20),
-                                        const SizedBox(
+                                        SizedBox(
                                           height:
                                               200, // Constrain the height of the chart
-                                          child: MyChart(),
+                                          child: MyChart(
+                                            stats: widget.expenseStats,
+                                          ),
                                         ),
                                       ],
                                     ),

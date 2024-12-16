@@ -1,5 +1,6 @@
 import json
 from flask import Flask, request, jsonify
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -131,9 +132,47 @@ def store_transaction():
     data = []
     for transaction in read_transactions_data():
         data.append(transaction)
+    user = read_user_data()
+    if incoming_data['type'] == "INCOME":
+        user['balance'] = user['balance'] + incoming_data['amount']
+        user['income'] = user['income'] + incoming_data['amount']
+    else:
+        user['balance'] = user['balance'] - incoming_data['amount']
+        user['expense'] = user['expense'] + incoming_data['amount']
     data.insert(0,incoming_data)
     write_transactions_data(data)
+    write_user_data(user)
     return jsonify({'message': 'Data stored successfully', 'data': incoming_data}), 201
+
+@app.route('/incomeStats', methods=['GET'])
+def get_incomes_stats():
+    data = []
+    stats = [0,0,0,0,0,0,0,0]
+    incomes = 0
+    for transaction in read_transactions_data():
+        data.append(transaction)
+    for transaction in data:
+        difference =(datetime.strptime(transaction['date'], "%Y-%m-%d") - datetime.today()).days
+        if  difference < 7 and transaction['type'] == "INCOME":
+            stats[difference] += transaction['amount']
+            incomes += transaction['amount']
+    stats[7] = incomes
+    return jsonify(stats), 200
+@app.route('/expenseStats', methods=['GET'])
+def get_expenses_stats():
+    data = []
+    stats = [0,0,0,0,0,0,0,0]
+    expenses = 0
+    for transaction in read_transactions_data():
+        data.append(transaction)
+    for transaction in data:
+        difference =(datetime.strptime(transaction['date'], "%Y-%m-%d") - datetime.today()).days
+        if  difference < 7 and transaction['type'] == "EXPENSE":
+            stats[difference] += transaction['amount']
+            expenses += transaction['amount']
+    stats[7] = expenses
+    return jsonify(stats), 200
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)

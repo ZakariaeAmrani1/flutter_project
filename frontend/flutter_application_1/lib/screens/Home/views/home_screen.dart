@@ -24,9 +24,13 @@ class _HomeScreenState extends State<HomeScreen> {
   final String getuserUrl = 'http://192.168.8.146:5000/user';
   final String gettransactionsUrl = 'http://192.168.8.146:5000/transactions';
   final String getchatUrl = 'http://192.168.8.146:5000/chatHistory';
+  final String getincomeStatsUrl = 'http://192.168.8.146:5000/incomeStats';
+  final String getexpenseStatsUrl = 'http://192.168.8.146:5000/expenseStats';
   late Map<String, dynamic> userData;
   late List<Map<String, dynamic>> transactions;
   late List<Map<String, dynamic>> chatHistory;
+  late List<dynamic> incomeStats;
+  late List<dynamic> expenseStats;
   bool isLoading = true;
   Future<void> fetchUserData() async {
     try {
@@ -74,7 +78,37 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void updateTransaction(data) {
+  Future<void> fetchStatsData() async {
+    try {
+      final incomeStatsResponse = await http.get(Uri.parse(getincomeStatsUrl));
+      if (incomeStatsResponse.statusCode == 200) {
+        setState(() {
+          incomeStats = jsonDecode(incomeStatsResponse.body);
+        });
+      } else {
+        print(
+            'Failed to load income stats data: ${incomeStatsResponse.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching income stats data: $e');
+    }
+    try {
+      final expenseStatsResponse =
+          await http.get(Uri.parse(getexpenseStatsUrl));
+      if (expenseStatsResponse.statusCode == 200) {
+        setState(() {
+          expenseStats = jsonDecode(expenseStatsResponse.body);
+        });
+      } else {
+        print(
+            'Failed to load expense stats data: ${expenseStatsResponse.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching expense stats data: $e');
+    }
+  }
+
+  Future<void> updateTransaction(data) async {
     AlertInfo.show(
       context: context,
       text: 'Transaction added successfelly.',
@@ -84,6 +118,21 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     setState(() {
       transactions.insert(0, data);
+      userData['balance'] = data['type'] == "INCOME"
+          ? userData['balance'] + data['amount']
+          : userData['balance'] - data['amount'];
+      if (data['type'] == "INCOME") {
+        userData['income'] = userData['income'] + data['amount'];
+      } else {
+        userData['expense'] = userData['expense'] + data['amount'];
+      }
+    });
+    fetchStatsData();
+  }
+
+  void updateUser(data) {
+    setState(() {
+      userData = data;
     });
   }
 
@@ -93,17 +142,23 @@ class _HomeScreenState extends State<HomeScreen> {
       isLoading = true;
     });
     fetchUserData();
+    fetchStatsData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? Center(
-            child: LoadingAnimationWidget.twistingDots(
-              leftDotColor: Theme.of(context).colorScheme.primary,
-              rightDotColor: Theme.of(context).colorScheme.secondary,
-              size: 50,
+        ? Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
+            child: Center(
+              child: LoadingAnimationWidget.twistingDots(
+                leftDotColor: Theme.of(context).colorScheme.primary,
+                rightDotColor: Theme.of(context).colorScheme.secondary,
+                size: 50,
+              ),
             ),
           )
         : Scaffold(
@@ -183,10 +238,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     userData: userData,
                     transactions: transactions,
                     chatHistory: chatHistory,
+                    onUpdate: updateUser,
                   )
                 : StatsScreen(
                     transactions: transactions,
                     userData: userData,
+                    incomeStats: incomeStats,
+                    expenseStats: expenseStats,
                   ),
           );
   }
