@@ -22,7 +22,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final String postuserUrl = 'http://192.168.8.146:5000/user';
+  final String postuserUrl = 'https://alexo.pythonanywhere.com/user';
   String? username;
   String? email;
   String? selectedGender;

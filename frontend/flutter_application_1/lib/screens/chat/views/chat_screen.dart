@@ -18,7 +18,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final String postchatUrl = 'http://192.168.8.146:5000/chatHistory';
+  final String postchatUrl = 'https://alexo.pythonanywhere.com/chatHistory';
   final customChat = Groq(APIKEY).startNewChat(GroqModels.llama3_70b,
       settings: GroqChatSettings(
         temperature: 0.8,

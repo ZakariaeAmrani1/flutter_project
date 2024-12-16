@@ -32,7 +32,9 @@ class _MyChartState extends State<MyChart> {
           ),
           width: 10,
           backDrawRodData: BackgroundBarChartRodData(
-              show: true, toY: widget.stats[7], color: Colors.grey.shade300))
+              show: true,
+              toY: widget.stats[7].toDouble(),
+              color: Colors.grey.shade300))
     ]);
   }
 

@@ -21,11 +21,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int index = 0;
-  final String getuserUrl = 'http://192.168.8.146:5000/user';
-  final String gettransactionsUrl = 'http://192.168.8.146:5000/transactions';
-  final String getchatUrl = 'http://192.168.8.146:5000/chatHistory';
-  final String getincomeStatsUrl = 'http://192.168.8.146:5000/incomeStats';
-  final String getexpenseStatsUrl = 'http://192.168.8.146:5000/expenseStats';
+  final String getuserUrl = 'https://alexo.pythonanywhere.com/user';
+  final String gettransactionsUrl =
+      'https://alexo.pythonanywhere.com/transactions';
+  final String getchatUrl = 'https://alexo.pythonanywhere.com/chatHistory';
+  final String getincomeStatsUrl =
+      'https://alexo.pythonanywhere.com/incomeStats';
+  final String getexpenseStatsUrl =
+      'https://alexo.pythonanywhere.com/expenseStats';
   late Map<String, dynamic> userData;
   late List<Map<String, dynamic>> transactions;
   late List<Map<String, dynamic>> chatHistory;

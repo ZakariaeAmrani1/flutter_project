@@ -1,2 +1,38 @@
 [
+    {
+        "id": 3,
+        "amount": 1100.0,
+        "date": "2024-12-14",
+        "type": "EXPENSE"
+    },
+    {
+        "id": 2,
+        "amount": 500.0,
+        "date": "2024-12-13",
+        "type": "EXPENSE"
+    },
+    {
+        "id": 1,
+        "amount": 1000.0,
+        "date": "2024-12-12",
+        "type": "EXPENSE"
+    },
+    {
+        "id": 0,
+        "amount": 600.0,
+        "date": "2024-12-14",
+        "type": "INCOME"
+    },
+    {
+        "id": 0,
+        "amount": 500.0,
+        "date": "2024-12-13",
+        "type": "INCOME"
+    },
+    {
+        "id": 0,
+        "amount": 10000.0,
+        "date": "2024-12-12",
+        "type": "INCOME"
+    }
 ]
