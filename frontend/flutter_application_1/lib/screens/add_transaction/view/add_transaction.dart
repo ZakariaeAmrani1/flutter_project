@@ -25,6 +25,7 @@ class _AddTransactionState extends State<AddTransaction>
     with SingleTickerProviderStateMixin {
   final String posttransactionUrl =
       'https://alexo.pythonanywhere.com/transactions';
+  // final String posttransactionUrl = 'http://192.168.8.146:5000/transactions';
   final TextEditingController textEditingController = TextEditingController();
   int _transactionType = 0;
   String? selectedDate;

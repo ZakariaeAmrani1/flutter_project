@@ -33,7 +33,7 @@ class _MyChartState extends State<MyChart> {
           width: 10,
           backDrawRodData: BackgroundBarChartRodData(
               show: true,
-              toY: widget.stats[7].toDouble(),
+              toY: (widget.stats[8].toDouble()),
               color: Colors.grey.shade300))
     ]);
   }
@@ -41,19 +41,19 @@ class _MyChartState extends State<MyChart> {
   List<BarChartGroupData> showingGroups() => List.generate(7, (i) {
         switch (i) {
           case 0:
-            return makeGroupData(0, widget.stats[0].toDouble());
+            return makeGroupData(0, widget.stats[6].toDouble());
           case 1:
-            return makeGroupData(1, widget.stats[1].toDouble());
+            return makeGroupData(1, widget.stats[5].toDouble());
           case 2:
-            return makeGroupData(2, widget.stats[2].toDouble());
+            return makeGroupData(2, widget.stats[4].toDouble());
           case 3:
             return makeGroupData(3, widget.stats[3].toDouble());
           case 4:
-            return makeGroupData(4, widget.stats[4].toDouble());
+            return makeGroupData(4, widget.stats[2].toDouble());
           case 5:
-            return makeGroupData(5, widget.stats[5].toDouble());
+            return makeGroupData(5, widget.stats[1].toDouble());
           case 6:
-            return makeGroupData(6, widget.stats[6].toDouble());
+            return makeGroupData(6, widget.stats[0].toDouble());
           default:
             return throw Error();
         }

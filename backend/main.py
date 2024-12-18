@@ -56,6 +56,10 @@ def write_chat_data(data):
     with open(CHAT_FILE, 'w') as file:
         json.dump(data, file, indent=4)
 
+def max_magnitude(num):
+    magnitude = 10 ** (len(str(int(num))) - 1)
+    return (num // magnitude + 1) * magnitude
+
 @app.route('/data', methods=['POST'])
 def store_data():
     incoming_data = request.get_json()
@@ -147,30 +151,34 @@ def store_transaction():
 @app.route('/incomeStats', methods=['GET'])
 def get_incomes_stats():
     data = []
-    stats = [0,0,0,0,0,0,0,0]
+    stats = [0,0,0,0,0,0,0,0,0]
     incomes = 0
     for transaction in read_transactions_data():
         data.append(transaction)
     for transaction in data:
-        difference =(datetime.strptime(transaction['date'], "%Y-%m-%d") - datetime.today()).days
-        if  difference < 7 and transaction['type'] == "INCOME":
-            stats[difference] += transaction['amount']
+        difference = abs((datetime.strptime(transaction['date'], "%Y-%m-%d") - datetime.today()).days)
+        if  difference <= 7 and transaction['type'] == "INCOME":
+            stats[difference-1] += transaction['amount']
             incomes += transaction['amount']
+    maxValue = max(stats)
     stats[7] = incomes
+    stats[8]= max_magnitude(maxValue)
     return jsonify(stats), 200
 @app.route('/expenseStats', methods=['GET'])
 def get_expenses_stats():
     data = []
-    stats = [0,0,0,0,0,0,0,0]
+    stats = [0,0,0,0,0,0,0,0,0]
     expenses = 0
     for transaction in read_transactions_data():
         data.append(transaction)
     for transaction in data:
-        difference =(datetime.strptime(transaction['date'], "%Y-%m-%d") - datetime.today()).days
-        if  difference < 7 and transaction['type'] == "EXPENSE":
-            stats[difference] += transaction['amount']
+        difference = abs((datetime.strptime(transaction['date'], "%Y-%m-%d") - datetime.today()).days)
+        if  difference <= 7 and transaction['type'] == "EXPENSE":
+            stats[difference-1] += transaction['amount']
             expenses += transaction['amount']
+    maxValue = max(stats)
     stats[7] = expenses
+    stats[8]= max_magnitude(maxValue)
     return jsonify(stats), 200
 
 

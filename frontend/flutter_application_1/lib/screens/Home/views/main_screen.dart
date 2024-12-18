@@ -66,9 +66,11 @@ class _MainScreenState extends State<MainScreen> {
                             color: Colors.yellow[800],
                           ),
                         ),
-                        Icon(
-                          CupertinoIcons.person_fill,
-                          color: Colors.yellow[900],
+                        Image.asset(
+                          widget.userData['gender'] == "Male"
+                              ? 'assets/malelogo.png'
+                              : 'assets/femalelogo.png',
+                          width: 40,
                         ),
                       ],
                     ),
@@ -380,37 +382,35 @@ class _MainScreenState extends State<MainScreen> {
                 },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute<void>(
-                            builder: (BuildContext context) =>
-                                ChatScreen(chatHistory: widget.chatHistory),
-                          ),
-                        );
-                      },
-                      icon: Icon(
-                        Icons.chat,
-                        color: Colors.grey.shade700,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        heroTag: "fab2",
+        onPressed: () {},
+        shape: const CircleBorder(),
+        child: Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) =>
+                        ChatScreen(chatHistory: widget.chatHistory),
+                  ),
+                );
+              },
+              child: Image.asset(
+                'assets/ailogo.png',
+              ),
+            )),
       ),
     );
   }

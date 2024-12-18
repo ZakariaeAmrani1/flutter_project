@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:alert_info/alert_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/data/iconsgetter.dart';
@@ -12,12 +13,18 @@ class StatsScreen extends StatefulWidget {
   final Map<String, dynamic> userData;
   final List<dynamic> incomeStats;
   final List<dynamic> expenseStats;
+  final List<Map<String, dynamic>> incomeTransactions;
+  final List<Map<String, dynamic>> expenseTransactions;
+  final Function(Map<String, Object?> data) onUpdate;
   const StatsScreen(
       {super.key,
-      required this.transactions,
       required this.userData,
       required this.incomeStats,
-      required this.expenseStats});
+      required this.expenseStats,
+      required this.incomeTransactions,
+      required this.expenseTransactions,
+      required this.transactions,
+      required this.onUpdate});
 
   @override
   State<StatsScreen> createState() => _StatsScreenState();
@@ -26,7 +33,14 @@ class StatsScreen extends StatefulWidget {
 class _StatsScreenState extends State<StatsScreen>
     with SingleTickerProviderStateMixin {
   void updateuser(data) {
-    setState(() {});
+    AlertInfo.show(
+      context: context,
+      text: 'Profile updated successfelly.',
+      typeInfo: TypeInfo.success,
+      backgroundColor: Colors.white,
+      textColor: Colors.grey.shade800,
+    );
+    widget.onUpdate(data);
   }
 
   final _tabs = [
@@ -43,17 +57,9 @@ class _StatsScreenState extends State<StatsScreen>
       ),
     ),
   ];
-  List<Map<String, dynamic>> incomeTransactions = [];
-  List<Map<String, dynamic>> expenseTransactions = [];
 
   @override
   void initState() {
-    incomeTransactions = widget.transactions
-        .where((transaction) => transaction['type'] == "INCOME")
-        .toList();
-    expenseTransactions = widget.transactions
-        .where((transaction) => transaction['type'] == "EXPENSE")
-        .toList();
     super.initState();
   }
 
@@ -237,7 +243,7 @@ class _StatsScreenState extends State<StatsScreen>
                                 ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
-                                  itemCount: incomeTransactions.length,
+                                  itemCount: widget.incomeTransactions.length,
                                   itemBuilder: (context, int i) {
                                     return Padding(
                                       padding:
@@ -264,23 +270,22 @@ class _StatsScreenState extends State<StatsScreen>
                                                     width: 50,
                                                     height: 50,
                                                     decoration: BoxDecoration(
-                                                      color:
-                                                          Iconsgetter.getColor(
-                                                              incomeTransactions[
-                                                                  i]['id']),
+                                                      color: Iconsgetter.getColor(
+                                                          widget.incomeTransactions[
+                                                              i]['id']),
                                                       shape: BoxShape.circle,
                                                     ),
                                                     child: Iconsgetter.getIcon(
-                                                        incomeTransactions[i]
-                                                            ['id']),
+                                                        widget.incomeTransactions[
+                                                            i]['id']),
                                                   ),
                                                   const SizedBox(
                                                     width: 10,
                                                   ),
                                                   Text(
-                                                    Iconsgetter.getName(
-                                                        incomeTransactions[i]
-                                                            ['id']),
+                                                    Iconsgetter.getName(widget
+                                                            .incomeTransactions[
+                                                        i]['id']),
                                                     style: TextStyle(
                                                       fontSize: 14,
                                                       color: Theme.of(context)
@@ -297,11 +302,11 @@ class _StatsScreenState extends State<StatsScreen>
                                                     CrossAxisAlignment.end,
                                                 children: [
                                                   Text(
-                                                    incomeTransactions[i]
+                                                    widget.incomeTransactions[i]
                                                                 ['type'] ==
                                                             "INCOME"
-                                                        ? "${incomeTransactions[i]['amount'].toStringAsFixed(2)}\$"
-                                                        : "- ${incomeTransactions[i]['amount'].toStringAsFixed(2)}\$",
+                                                        ? "${widget.incomeTransactions[i]['amount'].toStringAsFixed(2)}\$"
+                                                        : "- ${widget.incomeTransactions[i]['amount'].toStringAsFixed(2)}\$",
                                                     style: TextStyle(
                                                       fontSize: 14,
                                                       color: Theme.of(context)
@@ -312,7 +317,7 @@ class _StatsScreenState extends State<StatsScreen>
                                                     ),
                                                   ),
                                                   Text(
-                                                    widget.transactions[i]
+                                                    widget.incomeTransactions[i]
                                                         ['date'],
                                                     style: const TextStyle(
                                                       fontSize: 14,
@@ -426,7 +431,7 @@ class _StatsScreenState extends State<StatsScreen>
                                       const NeverScrollableScrollPhysics(), // Disable inner scrolling
                                   shrinkWrap:
                                       true, // Let ListView fit its content
-                                  itemCount: expenseTransactions.length,
+                                  itemCount: widget.expenseTransactions.length,
                                   itemBuilder: (context, int i) {
                                     return Padding(
                                       padding:
@@ -454,21 +459,21 @@ class _StatsScreenState extends State<StatsScreen>
                                                     height: 50,
                                                     decoration: BoxDecoration(
                                                       color: Iconsgetter.getColor(
-                                                          expenseTransactions[i]
-                                                              ['id']),
+                                                          widget.expenseTransactions[
+                                                              i]['id']),
                                                       shape: BoxShape.circle,
                                                     ),
                                                     child: Iconsgetter.getIcon(
-                                                        expenseTransactions[i]
-                                                            ['id']),
+                                                        widget.expenseTransactions[
+                                                            i]['id']),
                                                   ),
                                                   const SizedBox(
                                                     width: 10,
                                                   ),
                                                   Text(
-                                                    Iconsgetter.getName(
-                                                        expenseTransactions[i]
-                                                            ['id']),
+                                                    Iconsgetter.getName(widget
+                                                            .expenseTransactions[
+                                                        i]['id']),
                                                     style: TextStyle(
                                                       fontSize: 14,
                                                       color: Theme.of(context)
@@ -485,11 +490,11 @@ class _StatsScreenState extends State<StatsScreen>
                                                     CrossAxisAlignment.end,
                                                 children: [
                                                   Text(
-                                                    expenseTransactions[i]
-                                                                ['type'] ==
+                                                    widget.expenseTransactions[
+                                                                i]['type'] ==
                                                             "INCOME"
-                                                        ? "${expenseTransactions[i]['amount'].toStringAsFixed(2)}\$"
-                                                        : "- ${expenseTransactions[i]['amount'].toStringAsFixed(2)}\$",
+                                                        ? "${widget.expenseTransactions[i]['amount'].toStringAsFixed(2)}\$"
+                                                        : "- ${widget.expenseTransactions[i]['amount'].toStringAsFixed(2)}\$",
                                                     style: TextStyle(
                                                       fontSize: 14,
                                                       color: Theme.of(context)
@@ -500,8 +505,8 @@ class _StatsScreenState extends State<StatsScreen>
                                                     ),
                                                   ),
                                                   Text(
-                                                    widget.transactions[i]
-                                                        ['date'],
+                                                    widget.expenseTransactions[
+                                                        i]['date'],
                                                     style: const TextStyle(
                                                       fontSize: 14,
                                                       color: Colors.grey,

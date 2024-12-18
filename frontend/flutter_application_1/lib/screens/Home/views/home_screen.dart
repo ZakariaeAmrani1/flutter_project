@@ -29,11 +29,18 @@ class _HomeScreenState extends State<HomeScreen> {
       'https://alexo.pythonanywhere.com/incomeStats';
   final String getexpenseStatsUrl =
       'https://alexo.pythonanywhere.com/expenseStats';
+  // final String getuserUrl = 'http://192.168.8.146:5000/user';
+  // final String gettransactionsUrl = 'http://192.168.8.146:5000/transactions';
+  // final String getchatUrl = 'http://192.168.8.146:5000/chatHistory';
+  // final String getincomeStatsUrl = 'http://192.168.8.146:5000/incomeStats';
+  // final String getexpenseStatsUrl = 'http://192.168.8.146:5000/expenseStats';
   late Map<String, dynamic> userData;
   late List<Map<String, dynamic>> transactions;
   late List<Map<String, dynamic>> chatHistory;
   late List<dynamic> incomeStats;
   late List<dynamic> expenseStats;
+  late List<Map<String, dynamic>> incomeTransactions = [];
+  late List<Map<String, dynamic>> expenseTransactions = [];
   bool isLoading = true;
   Future<void> fetchUserData() async {
     try {
@@ -76,6 +83,14 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (e) {
       print('Error fetching chat data: $e');
     }
+    setState(() {
+      incomeTransactions = transactions
+          .where((transaction) => transaction['type'] == "INCOME")
+          .toList();
+      expenseTransactions = transactions
+          .where((transaction) => transaction['type'] == "EXPENSE")
+          .toList();
+    });
     setState(() {
       isLoading = false;
     });
@@ -126,8 +141,10 @@ class _HomeScreenState extends State<HomeScreen> {
           : userData['balance'] - data['amount'];
       if (data['type'] == "INCOME") {
         userData['income'] = userData['income'] + data['amount'];
+        incomeTransactions.insert(0, data);
       } else {
         userData['expense'] = userData['expense'] + data['amount'];
+        expenseTransactions.insert(0, data);
       }
     });
     fetchStatsData();
@@ -152,15 +169,17 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            child: Center(
-              child: LoadingAnimationWidget.twistingDots(
-                leftDotColor: Theme.of(context).colorScheme.primary,
-                rightDotColor: Theme.of(context).colorScheme.secondary,
-                size: 50,
+        ? Scaffold(
+            body: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+              ),
+              child: Center(
+                child: LoadingAnimationWidget.twistingDots(
+                  leftDotColor: Theme.of(context).colorScheme.primary,
+                  rightDotColor: Theme.of(context).colorScheme.secondary,
+                  size: 50,
+                ),
               ),
             ),
           )
@@ -206,6 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             floatingActionButton: FloatingActionButton(
+              heroTag: "fab1",
               onPressed: () {
                 Navigator.push(
                   context,
@@ -248,6 +268,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     userData: userData,
                     incomeStats: incomeStats,
                     expenseStats: expenseStats,
+                    incomeTransactions: incomeTransactions,
+                    expenseTransactions: expenseTransactions,
+                    onUpdate: updateUser,
                   ),
           );
   }

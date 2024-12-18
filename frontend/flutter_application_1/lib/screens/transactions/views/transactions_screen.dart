@@ -366,7 +366,7 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
                                   ),
                                 ),
                                 Text(
-                                  widget.transactions[i]['date'],
+                                  filtredTransaction[i]['date'],
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.grey,
